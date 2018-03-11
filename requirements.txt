@@ -1,0 +1,6 @@
+gitpython
+pyyaml
+pluginbase
+docker
+python-slugify
+transitions

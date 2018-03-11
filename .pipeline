@@ -1,0 +1,21 @@
+stages:
+  - name: Flake8
+    module:
+      name: flake8
+
+  - name: PyTest
+    module:
+      name: pytest
+      config:
+        requirements_command: pip install -e .[tests]
+
+    matrix:
+      language_version:
+        - python:3.5
+        - python:3.6
+      environment:
+        - TWISTED="twisted"
+        - TWISTED="twisted==17.5.0"
+
+
+

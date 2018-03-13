@@ -1,10 +1,11 @@
 import os
 
+from pipeline.module import Module
+
 
 def run(**kwargs):
     docker = kwargs["docker"]
     workspace = kwargs["workspace"]
-
 
     volume = {
         workspace: {'bind': "/code", 'mode': 'ro'}
@@ -16,3 +17,13 @@ def run(**kwargs):
         for line in container.logs(stream=True):
             file.writelines(line.decode('ascii'))
     return exit_code
+
+
+class Flake8CIModule(Module):
+    def run(self):
+        print("Hello")
+        print(self.volume_manager.as_dict())
+        return 0
+
+
+pipeline_ci_module = Flake8CIModule

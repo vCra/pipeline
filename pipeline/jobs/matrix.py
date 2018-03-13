@@ -22,6 +22,13 @@ class MatrixManager(object):
         """
         return self.vertices
 
+    def in_use(self):
+        """
+        Is this matrix being used (i.e. it has values)
+        :return: True if in use
+        """
+        return len(self.vertices) > 0
+
     def gen_combinations(self):
         """
         Generates combinations of strings, based on the provided matrix

@@ -1,3 +1,6 @@
+from pipeline.module import Module
+
+
 def run(config, **kwargs):
     print("Starting PyTest")
     docker = kwargs["docker"]
@@ -22,3 +25,10 @@ def run(config, **kwargs):
     for line in container.logs(stream=True):
         print(line.decode('ascii'))
     return exit_code
+
+
+class PytestCIModule(Module):
+    def run(self):
+        print("This is pytest!")
+
+pipeline_ci_module = PytestCIModule

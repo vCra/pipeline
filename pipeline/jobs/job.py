@@ -1,21 +1,19 @@
-from docker.models.containers import Container
-
-from pipeline.jobs.command_creator import CommandCreator
+from pipeline.jobs.job_status import JobStatus
 
 
-class Job(Container):
-    name = ""
-    commands = CommandCreator()
-    module = None
-    image = None
+class Job(object):
+    config = None
     client = None
-    enviroment = {}
+    status = JobStatus.NotStarted
 
-    def __init__(self, name, module, image, client, **kwargs):
-        self.name = name
-        self.module = module
+    def __init__(self, config, client):
+        """
+        A job that will get run
+        :param config: A config object that stores the configuration for the docker run command
+        :param client: A docker client
+        """
+        self.config = config
         self.client = client
-
         super(Job, self).__init__()
 
     def pre_run(self):
@@ -24,12 +22,36 @@ class Job(Container):
     def post_run(self):
         pass
 
-    def run(self, *args, **kwargs):
+    def on_error(self):
+        pass
 
-        self.client.run(
-            image=self.image,
-            command=self.commands.get_command(),
-            enviroment=self.enviroment,
+    def on_pass(self):
+        pass
 
-        )
+    def on_fail(self):
+        pass
+
+    def run(self):
+        print("Running job " + self.config.name)
+        print(self.config.as_dict())
+        return self.client.containers.run(self.config.as_dict())
+
+    def begin(self):
+        # noinspection PyBroadException
+        try:
+            self.status = JobStatus.Starting
+            self.pre_run()
+            self.status = JobStatus.Running
+            code = self.run()
+            if code != 0:
+                self.status = JobStatus.Failed
+                self.on_fail()
+            else:
+                self.status = JobStatus.Passed
+                self.on_pass()
+        except:
+            self.status = JobStatus.Errored
+            self.on_error()
+        self.post_run()
+
 

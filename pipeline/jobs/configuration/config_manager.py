@@ -6,7 +6,7 @@ class ConfigManager(object):
     global_config = None  # The configuration for the whole pipeline
     module_config = None  # The configuration for the specific module
     user_config = None    # The configuration provided by the user
-    matrix_manager = None
+    matrix_manager = None # The matrix used to generate
 
     job_configs = []
 
@@ -14,9 +14,10 @@ class ConfigManager(object):
     #  Ignored if no matrix is in use
     include_non_matrix_build = False
 
-    def __init__(self, global_config, module_config, matrix=None):
+    def __init__(self, global_config, module_config, user_config, matrix=None):
         self.global_config = global_config
         self.module_config = module_config
+        self.user_config = user_config
         self.matrix_manager = MatrixManager(matrix) if matrix else None
 
     def set_matrix(self, matrix):

@@ -2,7 +2,9 @@ import os
 import shutil
 
 from git import Repo
-from pipeline import Pipeline
+from pluginbase import PluginBase
+
+from pipeline.pipeline import Pipeline
 
 pipeline_location = "/pipeline"
 project_name = "test"
@@ -18,7 +20,12 @@ log_location = os.path.join(project_location, log_folder)
 pipeline_file = os.path.join(workspace_location, ".pipeline")
 
 yaml_data = None
-modules = None
+
+
+plugin_base = PluginBase(package='pipeline.modules')
+modules = plugin_base.make_plugin_source(
+    searchpath=['./pipeline/modules', ]
+)
 
 
 def setup_workspace():
@@ -33,7 +40,7 @@ def clone():
 
 
 def fake_pipeline():
-    open(pipeline_file, "w+").writelines(open("../.pipeline").readlines())
+    open(pipeline_file, "w+").writelines(open(".pipeline").readlines())
 
 
 def setup_docker():
@@ -50,4 +57,4 @@ def test():
 if __name__ == "__main__":
     test()
     docker_client = setup_docker()
-    pipeline = Pipeline(pipeline_file, docker_client)
+    pipeline = Pipeline(pipeline_file, docker_client, modules)

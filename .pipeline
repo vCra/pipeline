@@ -2,6 +2,15 @@ stages:
   - name: Flake8
     module:
       name: flake8
+<<<<<<< HEAD
+      config:
+        image: helloworld
+  - name: PyTest
+    module:
+      name: pytest
+    matrix:
+      image:
+=======
 
   - name: PyTest
     module:
@@ -11,8 +20,15 @@ stages:
 
     matrix:
       language_version:
+>>>>>>> 0d84f86... Add pipeline files
         - python:3.5
         - python:3.6
       environment:
         - TWISTED="twisted"
         - TWISTED="twisted==17.5.0"
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 0d84f86... Add pipeline files

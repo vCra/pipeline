@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 from pipeline.module import Module
 
 
+=======
+>>>>>>> 0d84f86... Add pipeline files
 def run(config, **kwargs):
     print("Starting PyTest")
     docker = kwargs["docker"]
@@ -13,9 +16,13 @@ def run(config, **kwargs):
 
 
     run_command = config.get("pytest_command", "pytest")
+<<<<<<< HEAD
+
+=======
     volume = {
         workspace: {'bind': "/code", 'mode': 'rw'}
     }
+>>>>>>> 0d84f86... Add pipeline files
     if requirements_required:
         command = "/bin/sh -c '"+requirements_command+";"+run_command+"'"
     else:
@@ -25,10 +32,14 @@ def run(config, **kwargs):
     for line in container.logs(stream=True):
         print(line.decode('ascii'))
     return exit_code
+<<<<<<< HEAD
 
 
 class PytestCIModule(Module):
     def run(self):
-        print("This is pytest!")
+        print("Starting PyTest")
+        super(PytestCIModule, self).run()
 
 pipeline_ci_module = PytestCIModule
+=======
+>>>>>>> 0d84f86... Add pipeline files

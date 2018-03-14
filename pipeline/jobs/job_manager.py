@@ -13,6 +13,7 @@ class JobManager(object):
         self.config = ConfigManager(
             self.module.stage.pipeline.config,
             self.module.config,
+            self.module.user_config,
             self.module.stage.matrix
         )
 

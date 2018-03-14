@@ -11,6 +11,8 @@ class Module(object):
     job_manager = None      # Job manager
     log_manager = None      # Log manager
     stage = None            # The stage of the pipeline that this module is running in
+    command_manager = None  # Manager for the commands
+    command_list = []       # List of commands that will get loaded into the command manager
 
     def __init__(self, stage, config):
         self.stage = stage              # The stage this module is being called from
@@ -27,6 +29,7 @@ class Module(object):
         :return:
         """
         return [Volume("workspace", "/code", Volume.ReadModes.ReadOnly), ]
+
 
     def run(self):
         self.job_manager = JobManager(self)

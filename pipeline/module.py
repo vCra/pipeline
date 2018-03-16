@@ -1,3 +1,4 @@
+from pipeline.jobs.configuration.command_creator import CommandCreator
 from pipeline.jobs.job_manager import JobManager
 from pipeline.volumes.volume import Volume
 from pipeline.volumes.volume_manager import VolumeManager
@@ -17,8 +18,9 @@ class Module(object):
     def __init__(self, stage, config):
         self.stage = stage              # The stage this module is being called from
         self.user_config = config       # The config that the stage gave this module - i.e. from the .pipeline file
+        self.job_manager = JobManager(self)
+        self.command_manager = CommandCreator()
         self.volume_manager = VolumeManager(volumes=self.get_volumes())     # Manages the volume for a volume
-        super(Module, self).__init__()
 
     def get_config(self):
         return {**self.config, **self.volume_manager.as_dict()}
@@ -28,13 +30,17 @@ class Module(object):
         Gets the volumes used for this module
         :return:
         """
-        return [Volume("workspace", "/code", Volume.ReadModes.ReadOnly), ]
+        return [Volume("/pipeline/test/workspace/", "/code", Volume.ReadModes.ReadOnly), ]
 
+    def gen_config(self):
+        """
+        To be ran before a module is ran, to set the config to the values from the various managers, such as the command
+        manager and the volume manager.
+        """
+        self.config.update(self.command_manager.as_dict())
+        self.config["volumes"] = self.volume_manager.get_volumes()
 
     def run(self):
-        self.job_manager = JobManager(self)
+        self.gen_config()
+        self.job_manager.create_jobs()
         self.job_manager.execute_all()
-
-
-
-

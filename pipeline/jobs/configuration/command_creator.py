@@ -20,3 +20,8 @@ class CommandCreator(object):
         if self.commands:
             return '/bin/sh -c '.join([command[1] for command in sorted(self.commands)])
         return None
+
+    def as_dict(self):
+        if self.get_command():
+            return {"command": self.get_command()}
+        return {}

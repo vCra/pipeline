@@ -3,10 +3,10 @@ from pipeline.jobs.matrix import MatrixManager
 
 class ConfigManager(object):
 
-    global_config = None  # The configuration for the whole pipeline
-    module_config = None  # The configuration for the specific module
-    user_config = None    # The configuration provided by the user
-    matrix_manager = None # The matrix used to generate
+    global_config = None   # The configuration for the whole pipeline
+    module_config = None   # The configuration for the specific module
+    user_config = None     # The configuration provided by the user
+    matrix_manager = None  # The matrix used to generate
 
     job_configs = []
 

@@ -7,14 +7,17 @@ class Pipeline(object):
     stages = []
     pipeline = None
     docker = None
-    config = {}
+    global_config = {
+        "detach": True
+    }
 
     def __init__(self, pipeline_file, docker_client, modules):
         self.docker = docker_client
         self.modules = modules
         yaml_stages = YAMLReader(pipeline_file).load_stages()
         for stage in yaml_stages:
-            self.stages.append(Stage(stage, self))
+            new_stage = Stage(stage, self)
+            self.stages.append(new_stage)
 
         for stage in self.stages:
             stage.run()

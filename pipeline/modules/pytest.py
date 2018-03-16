@@ -2,9 +2,9 @@ from pipeline.module import Module
 
 
 class PytestCIModule(Module):
-    def run(self):
-        print("Starting PyTest")
-        super(PytestCIModule, self).run()
+    config = {
+        "image": "python:3"
+    }
 
 
 pipeline_ci_module = PytestCIModule

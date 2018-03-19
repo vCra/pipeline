@@ -4,7 +4,6 @@ from pipeline.jobs.matrix import MatrixManager
 class ConfigManager(object):
 
     global_config = None   # The configuration for the whole pipeline
-    module_config = None   # The configuration for the specific module
     user_config = None     # The configuration provided by the user
     matrix_manager = None  # The matrix used to generate
 
@@ -26,7 +25,7 @@ class ConfigManager(object):
     def get_config(self, matrix_config=None):
         if matrix_config is None:
             matrix_config = {}
-        from pipeline.jobs.configuration.configuration import Configuration
+        from pipeline.jobs.configuration.configuration_docker import Configuration
         return Configuration(**{**self.global_config, **self.module_config, **self.user_config, **matrix_config})
 
     def gen_matrix_config(self):

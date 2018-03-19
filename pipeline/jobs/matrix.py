@@ -1,3 +1,6 @@
+from pprint import pprint
+
+
 class MatrixManager(object):
     """
     The matrix manager is used ti
@@ -7,7 +10,7 @@ class MatrixManager(object):
 
     def __init__(self, matrix):
         self.matrix = matrix
-        self.vertices = self.gen_combinations()
+        self.vertices = self.gen_combinations(self.matrix)
         super(MatrixManager, self).__init__()
 
     def get_matrix(self):
@@ -29,23 +32,25 @@ class MatrixManager(object):
         """
         return len(self.vertices) > 0
 
-    def gen_combinations(self):
+
+    def gen_combinations(self, matrix):
         """
         Generates combinations of strings, based on the provided matrix
         """
+
+        def get_kv_pairs(dic):
+            d = []
+            for prop in dic:
+                for item in dic[prop]:
+                    if type(item) == dict:
+                        d.append({prop: get_kv_pairs(item)})
+                    else:
+                        d.append({prop: item})
+            return d
+
         import itertools
 
-        matrix = self.get_matrix()
 
-        names = sorted(matrix)  # The "Headings" of each matrix item
+        pprint(get_kv_pairs(matrix))
 
-        combinations = itertools.product(*(matrix[name] for name in names))
-        jobs = []
 
-        for c in combinations:
-            d = {}
-            for i in range(len(names)):
-                d.update({names[i]: c[i]})
-            jobs.append(d)
-
-        return jobs

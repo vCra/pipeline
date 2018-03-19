@@ -8,7 +8,7 @@ class Stage(object):
         self.name = config["name"]
         self.pipeline = pipeline
         self.load_module(config["module"])
-        # self.load_matrix(config)
+        self.load_matrix(config)
 
     def get_stage_status(self):
         return self.module.status

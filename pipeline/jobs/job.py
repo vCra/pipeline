@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from pipeline.jobs.job_status import JobStatus
 
 
@@ -34,7 +36,7 @@ class Job(object):
 
     def run(self):
         print("Running job " + self.config.name)
-        print(self.config.as_dict())
+        pprint(self.config.as_dict())
         self.container = self.client.containers.run(**self.config.as_dict())
         exit_code = self.container.wait()["StatusCode"]
         return exit_code
@@ -52,9 +54,8 @@ class Job(object):
             else:
                 self.status = JobStatus.Passed
                 self.on_pass()
+        # except:
         except KeyboardInterrupt:  # Catch any errors that occur and set the status as errored - present to user
             self.status = JobStatus.Errored
             self.on_error()
         self.post_run()
-
-

@@ -14,6 +14,7 @@ class Module(object):
     stage = None            # The stage of the pipeline that this module is running in
     command_manager = None  # Manager for the commands
     command_list = []       # List of commands that will get loaded into the command manager
+    supported_configs = []  # List of possible configuration values, which can be used to configure tge
 
     def __init__(self, stage, config):
         self.stage = stage              # The stage this module is being called from

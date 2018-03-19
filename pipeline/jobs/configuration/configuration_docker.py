@@ -1,6 +1,6 @@
 class Configuration(object):
     """
-    A configuration for a job
+    A configuration for a runnable docker job.
     """
     name = None
     image = None
@@ -8,7 +8,7 @@ class Configuration(object):
     auto_remove = None
     detach = None
     entrypoint = None
-    enviroment = None
+    environment = None
     hostname = None
     init = None
     log_config = None
@@ -21,8 +21,14 @@ class Configuration(object):
 
     def __init__(self, **dictionary):
         """Constructor"""
+        self._add_keys(**dictionary)
+
+    def _add_keys(self, **dictionary):
         for key in dictionary:
-            setattr(self, key, dictionary[key])
+            if key in dir(self):
+                setattr(self, key, dictionary[key])
+            else:
+                print(key)
 
     def as_dict(self):
         return vars(self)

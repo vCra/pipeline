@@ -8,7 +8,7 @@ class JobManager(object):
 
     jobs = []
     module = None
-    config = None
+    config_manager = None
     job_class = Job
 
     def __init__(self, module):
@@ -21,29 +21,29 @@ class JobManager(object):
         :return:
         """
 
-        def gen_job_name(v_config):
-            """
-            Generate a name for a matrix job, based on the matrix configuration
-            :param v_config: The matrix job vertex
-            :return:
-            """
-            from slugify import slugify
-            return slugify(self.module.name+str(list(v_config.values())))
+        # def gen_job_name(v_config):
+        #     """
+        #     Generate a name for a matrix job, based on the matrix configuration
+        #     :param v_config: The matrix job vertex
+        #     :return:
+        #     """
+        #     from slugify import slugify
+        #     return slugify(self.module.name+str(list(v_config.values())))
 
-        self.config = ConfigManager(
+        self.config_manager = ConfigManager(
+            self.module,
             self.module.stage.pipeline.global_config,
-            self.module.config,
             self.module.user_config,
             self.module.stage.matrix
         )
 
-        self.config.gen_all_config()
-        for config in self.config.job_configs:
-            config.name = config.name + str(random())
+        self.config_manager.gen_all_config()
+        for config in self.config_manager.job_configs:
+            config.name = config.name + str(random())  # TODO
             self.jobs.append(
                 self.job_class(config, self.module.stage.pipeline.docker)
             )
 
-    def execute_all(self):
+    def execute_all(self):  # TODO
         for job in self.jobs:
             job.begin()

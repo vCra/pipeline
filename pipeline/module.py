@@ -13,35 +13,35 @@ class Module(object):
     log_manager = None      # Log manager
     stage = None            # The stage of the pipeline that this module is running in
     command_manager = None  # Manager for the commands
-    command_list = []       # List of commands that will get loaded into the command manager
+    command = None          # Command to Run
     supported_configs = []  # List of possible configuration values, which can be used to configure tge
 
     def __init__(self, stage, config):
         self.stage = stage              # The stage this module is being called from
         self.user_config = config       # The config that the stage gave this module - i.e. from the .pipeline file
         self.job_manager = JobManager(self)
-        self.command_manager = CommandCreator()
-        self.volume_manager = VolumeManager(volumes=self.get_volumes())     # Manages the volume for a volume
+        self.command_manager = CommandCreator(self.command)
+        self.volume_manager = VolumeManager(volumes=self.volumes)     # Manages the volume for a volume
+
+    def gen_config(self, config):
+        """
+        To be ran before a job is run - processes the jobs config, and
+        """
+        config.update(self.command_manager.as_dict())
+        config.update(self.volume_manager.as_dict())
+        return config
 
     def get_config(self):
-        return {**self.config, **self.volume_manager.as_dict()}
+        return self.config
 
-    def get_volumes(self):
+    @property
+    def volumes(self):
         """
         Gets the volumes used for this module
         :return:
         """
         return [Volume("/pipeline/test/workspace/", "/code", Volume.ReadModes.ReadOnly), ]
 
-    def gen_config(self):
-        """
-        To be ran before a module is ran, to set the config to the values from the various managers, such as the command
-        manager and the volume manager.
-        """
-        self.config.update(self.command_manager.as_dict())
-        self.config["volumes"] = self.volume_manager.get_volumes()
-
     def run(self):
-        self.gen_config()
         self.job_manager.create_jobs()
         self.job_manager.execute_all()

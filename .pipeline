@@ -7,14 +7,12 @@ stages:
   - name: PyTest
     module:
       name: pytest
-
-    config:
       requirements_command: pip install -e .[tests]
 
     matrix:
-      language_version:
-        - python:3.5
-        - python:3.6
+      python_version:
+        - 3.5
+        - 3.6
       environment:
         - TWISTED:
           - twisted
@@ -22,5 +20,5 @@ stages:
         - TEST:
           - test1
           - test2
-
+        - TEST2=5
 

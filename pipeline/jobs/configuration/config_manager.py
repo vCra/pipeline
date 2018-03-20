@@ -3,9 +3,19 @@ from pipeline.jobs.matrix import MatrixManager
 
 class ConfigManager(object):
 
+    # TODO: IDEAS
+
+    """
+      - Get config from subclassed module - override method?
+      - store reference to module rather than module config on init - be able to call module.get_config(), which module
+        creator can override for whatever reason - e.g. config generation etc...
+      - Handle global config better somehow
+    """
+
     global_config = None   # The configuration for the whole pipeline
     user_config = None     # The configuration provided by the user
-    matrix_manager = None  # The matrix used to generate
+    module = None          # The module that this configuration is for
+    matrix_manager = None  # The matrix used to generate config on a per job basis
 
     job_configs = []
 
@@ -13,9 +23,10 @@ class ConfigManager(object):
     #  Ignored if no matrix is in use
     include_non_matrix_build = False
 
-    def __init__(self, global_config, module_config, user_config, matrix=None):
+    def __init__(self, module, global_config, user_config, matrix=None):
         self.global_config = global_config
-        self.module_config = module_config
+        # self.module_config = module_config
+        self.module = module
         self.user_config = user_config
         self.matrix_manager = MatrixManager(matrix) if matrix else None
 
@@ -26,7 +37,9 @@ class ConfigManager(object):
         if matrix_config is None:
             matrix_config = {}
         from pipeline.jobs.configuration.configuration_docker import Configuration
-        return Configuration(**{**self.global_config, **self.module_config, **self.user_config, **matrix_config})
+        config_dict = {**self.global_config, **self.module.get_config(), **self.user_config, **matrix_config}
+
+        return Configuration(**self.module.gen_config(config_dict))
 
     def gen_matrix_config(self):
         for job_config in self.matrix_manager.get_vertices():
@@ -39,3 +52,8 @@ class ConfigManager(object):
             if not self.include_non_matrix_build:
                 return None
         self.job_configs.append(self.get_config())
+
+    def get_job_configs(self):
+        self.gen_all_config()
+        return self.job_configs
+

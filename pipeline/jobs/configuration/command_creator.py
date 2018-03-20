@@ -2,13 +2,17 @@ class CommandCreator(object):
     """
     Stores commands in a tuple in the format (priority, command)
     """
-    commands = []
+    commands = None
 
-    def __init__(self):
-        super(CommandCreator, self).__init__()
+    def __init__(self, command=""):
+        self.commands = []
+        self.add_command(command)
 
     def add_command(self, command, priority=5):
-        self.commands.append((priority, command))
+        self.commands.append((priority, command or ""))
+
+    def set_command(self, command, priority=5):
+        self.commands.append((priority, command or ""))
 
     def set_commands(self, commands):
         self.commands = commands

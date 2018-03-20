@@ -1,3 +1,4 @@
+from itertools import product
 from pprint import pprint
 
 
@@ -32,25 +33,40 @@ class MatrixManager(object):
         """
         return len(self.vertices) > 0
 
-
     def gen_combinations(self, matrix):
         """
         Generates combinations of strings, based on the provided matrix
         """
+        commands = {}
 
-        def get_kv_pairs(dic):
-            d = []
-            for prop in dic:
-                for item in dic[prop]:
-                    if type(item) == dict:
-                        d.append({prop: get_kv_pairs(item)})
-                    else:
-                        d.append({prop: item})
+        def _convert(array):
+            d = {}
+            for i in array:
+                if type(i) == dict:
+                    d.update(i)
+                else:
+                    e = dict(x.split('=') for x in i.split(','))
+                    d.update(e)
             return d
 
-        import itertools
+        for setting in matrix:
+            commands.update({setting: []})
+            pprint(setting)
+            dicts = matrix[setting]
+            try:
+                dicts = _convert(dicts)
+                a = ((dict(zip(dicts, x)) for x in product(*dicts.values())))
+                for i in a:
+                    commands.get(setting).append(i)
+            except:
+                e = matrix[setting]
+                if type(e) == list:
+                    for i in e:
+                        commands.get(setting).append(i)
+                elif type(e) == str:
+                    commands.get(setting).append(matrix[setting])
+                else:
+                    print(e)
 
-
-        pprint(get_kv_pairs(matrix))
-
-
+        pprint(commands)
+        return (dict(zip(commands, x)) for x in product(*commands.values()))

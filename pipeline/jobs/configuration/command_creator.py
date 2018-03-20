@@ -1,31 +1,34 @@
+from pipeline.utils.queue import UniquePriorityQueue
+
+
 class CommandCreator(object):
     """
     Stores commands in a tuple in the format (priority, command)
     """
     commands = None
 
-    def __init__(self, command=""):
-        self.commands = []
+    def __init__(self, command=None):
+        self.commands = UniquePriorityQueue()
         self.add_command(command)
 
     def add_command(self, command, priority=5):
-        self.commands.append((priority, command or ""))
+        if command:
+            self.commands.put((priority, command))
 
-    def set_command(self, command, priority=5):
-        self.commands.append((priority, command or ""))
-
-    def set_commands(self, commands):
-        self.commands = commands
-
-    def get_commands_list(self):
-        return sorted(self.commands)
+    def add_commands(self, commands):
+        if commands:
+            for command in commands:
+                self.add_command(command)
 
     def get_command(self):
-        if self.commands:
-            return '/bin/sh -c '.join([command[1] for command in sorted(self.commands)])
-        return None
+        command_string = '/bin/sh -c "'
+        if self.commands.empty():
+            return None
+        while not self.commands.empty():
+            command_string = command_string + self.commands.get() + " ; "
+        return command_string + '"'
 
     def as_dict(self):
-        if self.get_command():
+        if not self.commands.empty():
             return {"command": self.get_command()}
         return {}

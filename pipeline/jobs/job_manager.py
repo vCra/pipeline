@@ -1,3 +1,4 @@
+from multiprocessing.pool import Pool
 from random import random
 
 from pipeline.jobs.configuration.config_manager import ConfigManager
@@ -43,7 +44,11 @@ class JobManager(object):
             self.jobs.append(
                 self.job_class(config, self.module.stage.pipeline.docker)
             )
+    @staticmethod
+    def run(job):
+        return job.begin()
 
     def execute_all(self):  # TODO
-        for job in self.jobs:
-            job.begin()
+        with Pool(processes=1) as pool:
+            for job in self.jobs:
+                pool.

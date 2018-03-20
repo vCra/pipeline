@@ -32,7 +32,8 @@ class Job(object):
         pass
 
     def on_fail(self):
-        pass
+        for line in self.container.logs(stream=True):
+            print(line.decode('ascii'), end="")
 
     def run(self):
         print("Running job " + self.config.name)
@@ -55,7 +56,7 @@ class Job(object):
                 self.status = JobStatus.Passed
                 self.on_pass()
         # except:
-        except KeyboardInterrupt:  # Catch any errors that occur and set the status as errored - present to user
+        except:  # Catch any errors that occur and set the status as errored - present to user
             self.status = JobStatus.Errored
             self.on_error()
         self.post_run()

@@ -40,7 +40,7 @@ class Module(object):
         Gets the volumes used for this module
         :return:
         """
-        return [Volume("/pipeline/test/workspace/", "/code", Volume.ReadModes.ReadOnly), ]
+        return [Volume("/pipeline/test/workspace/", "/code", Volume.ReadModes.ReadWrite), ]
 
     def run(self):
         self.job_manager.create_jobs()

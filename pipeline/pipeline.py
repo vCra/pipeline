@@ -8,7 +8,7 @@ class Pipeline(object):
     pipeline = None
     docker = None
     global_config = {
-        "detach": True
+        "detach": True,
     }
 
     def __init__(self, pipeline_file, docker_client, modules):

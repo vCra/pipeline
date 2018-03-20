@@ -4,8 +4,8 @@ from pipeline.module import Module
 class PytestCIModule(Module):
     config = {
         "image": "python:3",
-        "command": "pytest",
     }
+    command = "pytest"
 
     def gen_config(self, config):
 

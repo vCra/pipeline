@@ -8,7 +8,7 @@ from pipeline.pipeline import Pipeline
 
 pipeline_location = "/pipeline"
 project_name = "test"
-workspace_folder = "workspace"
+workspace_folder = "workspaces/0"
 output_folder = "output"
 log_folder = "logs"
 git_url = "https://github.com/django/daphne.git"

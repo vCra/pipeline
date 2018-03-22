@@ -37,7 +37,7 @@ class ConfigManager(object):
         if matrix_config is None:
             matrix_config = {}
         from pipeline.jobs.configuration.configuration_docker import Configuration
-        config_dict = {**self.global_config, **self.module.get_config(), **self.user_config, **matrix_config}
+        config_dict = {**self.global_config, **self.module.config, **self.user_config, **matrix_config}
 
         return Configuration(**self.module.gen_config(config_dict))
 

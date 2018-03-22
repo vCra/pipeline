@@ -3,12 +3,16 @@ from pipeline.yaml_reader import YAMLReader
 
 
 class Pipeline(object):
+    job_id = 1
     modules = None
     stages = []
     pipeline = None
     docker = None
     global_config = {
         "detach": True,
+        "project_location": "/pipeline/test/",
+        "workspace": "/pipeline/test/workspaces/0",
+        "workspaces_folder_location": "/pipeline/test/workspaces/"
     }
 
     def __init__(self, pipeline_file, docker_client, modules):

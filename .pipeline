@@ -7,8 +7,9 @@ stages:
   - name: PyTest
     module:
       name: pytest
-      requirements_command: pip install .[tests]
+      requirements_command: pip install -e .[tests]
       working_dir: /code
+      uws: True
 
     matrix:
       python_version:
@@ -18,5 +19,3 @@ stages:
         - TWISTED:
           - twisted
           - twisted==17.5.0
-
-

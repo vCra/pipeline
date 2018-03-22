@@ -1,9 +1,10 @@
 from pprint import pprint
+from threading import Thread
 
 from pipeline.jobs.job_status import JobStatus
 
 
-class Job(object):
+class Job(Thread):
     config = None
     client = None
     status = JobStatus.NotStarted
@@ -35,20 +36,20 @@ class Job(object):
         for line in self.container.logs(stream=True):
             print(line.decode('ascii'), end="")
 
-    def run(self):
+    def task(self):
         print("Running job " + self.config.name)
         pprint(self.config.as_dict())
         self.container = self.client.containers.run(**self.config.as_dict())
         exit_code = self.container.wait()["StatusCode"]
         return exit_code
 
-    def begin(self):
+    def run(self):
         # noinspection PyBroadException
         try:
             self.status = JobStatus.Starting
             self.pre_run()
             self.status = JobStatus.Running
-            code = self.run()
+            code = self.task()
             if code != 0:
                 self.status = JobStatus.Failed
                 self.on_fail()
@@ -56,7 +57,7 @@ class Job(object):
                 self.status = JobStatus.Passed
                 self.on_pass()
         # except:
-        except:  # Catch any errors that occur and set the status as errored - present to user
+        except KeyboardInterrupt:  # Catch any errors that occur and set the status as errored - present to user
             self.status = JobStatus.Errored
             self.on_error()
         self.post_run()

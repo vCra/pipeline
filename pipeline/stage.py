@@ -21,7 +21,7 @@ class Stage(object):
 
     def load_module(self, module_data):
         module = self.pipeline.modules.load_plugin(module_data["name"])
-        self.module = module.pipeline_ci_module(self, module_data)
+        self.module = module.pipeline_ci_module(self, config=module_data)
 
     def run(self):
         self.module.run()

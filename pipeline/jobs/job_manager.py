@@ -40,15 +40,13 @@ class JobManager(object):
 
         self.config_manager.gen_all_config()
         for config in self.config_manager.job_configs:
-            config.name = config.name + str(random())  # TODO
             self.jobs.append(
                 self.job_class(config, self.module.stage.pipeline.docker)
             )
-    @staticmethod
-    def run(job):
-        return job.begin()
 
     def execute_all(self):  # TODO
-        with Pool(processes=1) as pool:
-            for job in self.jobs:
-                pool.
+        for job in self.jobs:
+                job.start()
+
+        for job in self.jobs:
+            job.join()

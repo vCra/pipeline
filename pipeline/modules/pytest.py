@@ -1,7 +1,7 @@
-from pipeline.module import Module
+from pipeline.modules.module import StarterModule
 
 
-class PytestCIModule(Module):
+class PytestCIModule(StarterModule):
     config = {
         "image": "python:3",
     }
@@ -17,7 +17,7 @@ class PytestCIModule(Module):
 
         try:
             requirements = config.pop("requirements_command")
-            self.command_manager.add_command(requirements, 1)
+
         except KeyError:
             pass
 

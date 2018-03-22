@@ -1,8 +1,8 @@
 from pipeline.jobs.job import Job
-from pipeline.module import Module
+from pipeline.modules.module import StarterModule
 
 
-class Flake8CIModule(Module):
+class Flake8CIModule(StarterModule):
     config = {
         "image": "eeacms/flake8",
     }

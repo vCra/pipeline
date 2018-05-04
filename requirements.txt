@@ -1,6 +1,6 @@
 gitpython==2.1.9
 pyyaml==3.12
-pluginbase
+pluginbase==0.5
 docker
 python-slugify
 transitions

@@ -1,5 +1,5 @@
 gitpython==2.1.9
-pyyaml
+pyyaml==3.12
 pluginbase
 docker
 python-slugify

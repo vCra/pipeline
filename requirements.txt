@@ -1,4 +1,4 @@
-gitpython
+gitpython==2.1.9
 pyyaml
 pluginbase
 docker

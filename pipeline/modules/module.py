@@ -22,8 +22,8 @@ class BaseModule(object):
     supported_configs = []  # List of possible configuration values, which can be used to configure tge
 
     def __init__(self, stage, *args, **kwargs):
-        super(BaseModule, self).__init__(*args, **kwargs)
         self.stage = stage              # The stage this module is being called from
+        super(BaseModule, self).__init__(*args, **kwargs)
 
     def run(self):
         """
@@ -38,7 +38,7 @@ class Module(BaseModule, ModuleConfigMixin):
 
 class ManagerModule(Module):
     """
-    Module that uses
+    Module that uses a manager to do things?
     """
     managers = {}           # List of managers used to generate per job configuration
 

@@ -1,15 +1,15 @@
 stages:
 
-  - name: Flake83
+  - name: Flake8
     module:
-      name: flake8
+      mod_name: flake8
 
   - name: PyTest
     module:
-      name: pytest
+      mod_name: pytest
       requirements_command: pip install -e .[tests]
       working_dir: /code
-      uws: True
+      uws: False
 
     matrix:
       python_version:

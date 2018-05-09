@@ -1,7 +1,6 @@
 import os
 import shutil
 
-from git import Repo
 from pluginbase import PluginBase
 
 from pipeline.pipeline import Pipeline
@@ -11,7 +10,6 @@ project_name = "test"
 workspace_folder = "workspaces/0"
 output_folder = "output"
 log_folder = "logs"
-git_url = "https://github.com/django/daphne.git"
 
 project_location = os.path.join(pipeline_location, project_name)
 workspace_location = os.path.join(project_location, workspace_folder)
@@ -29,14 +27,9 @@ modules = plugin_base.make_plugin_source(
 
 
 def setup_workspace():
-    shutil.rmtree(project_location, ignore_errors=True)
     os.makedirs(workspace_location, exist_ok=True)
-    os.mkdir(log_location)
-    os.mkdir(output_location)
-
-
-def clone():
-    Repo.clone_from(git_url, workspace_location)
+    os.makedirs(log_location, exist_ok=True)
+    os.makedirs(output_location, exist_ok=True)
 
 
 def fake_pipeline():
@@ -50,7 +43,6 @@ def setup_docker():
 
 def test():
     setup_workspace()
-    clone()
     fake_pipeline()
 
 

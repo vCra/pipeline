@@ -30,15 +30,14 @@ class Job(Thread):
         pass
 
     def on_pass(self):
-        pass
+        for line in self.container.logs(stream=True):
+            print(line.decode('ascii'), end="")
 
     def on_fail(self):
         for line in self.container.logs(stream=True):
             print(line.decode('ascii'), end="")
 
     def task(self):
-        print("Running job " + self.config.name)
-        pprint(self.config.as_dict())
         self.container = self.client.containers.run(**self.config.as_dict())
         exit_code = self.container.wait()["StatusCode"]
         return exit_code

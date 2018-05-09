@@ -15,4 +15,6 @@ class Flake8CIModule(StarterModule):
         super(Flake8CIModule, self).__init__(*args, **kwargs)
         self.job_manager.job_class = self.Flake8Job
 
+
+
 pipeline_ci_module = Flake8CIModule

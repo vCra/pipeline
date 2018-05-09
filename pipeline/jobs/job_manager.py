@@ -38,10 +38,9 @@ class JobManager(object):
             self.module.stage.matrix
         )
 
-        self.config_manager.gen_all_config()
-        for config in self.config_manager.job_configs:
+        for job_config in self.config_manager.get_job_configs():
             self.jobs.append(
-                self.job_class(config, self.module.stage.pipeline.docker)
+                self.job_class(job_config, self.module.stage.pipeline.docker)
             )
 
     def execute_all(self):  # TODO

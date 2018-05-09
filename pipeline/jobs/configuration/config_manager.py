@@ -9,7 +9,7 @@ class ConfigManager(object):
       - Get config from subclassed module - override method?
       - store reference to module rather than module config on init - be able to call module.get_config(), which module
         creator can override for whatever reason - e.g. config generation etc...
-      - Handle global config better somehow
+      - Handle global config better somehow?
     """
 
     global_config = None   # The configuration for the whole pipeline
@@ -53,6 +53,7 @@ class ConfigManager(object):
                 return None
         self.job_configs.append(self.get_config())
 
+    # TODO: Convert into generator
     def get_job_configs(self):
         self.gen_all_config()
         return self.job_configs

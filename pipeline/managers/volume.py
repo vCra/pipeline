@@ -40,7 +40,7 @@ class VolumeManager(Manager):
 
         if create_workspace:
             workspaces_dir_location = configuration["workspaces_folder_location"]
-            workspace_location = os.path.join(workspaces_dir_location, configuration)
+            workspace_location = os.path.join(workspaces_dir_location, "0")
             shutil.copytree(workspace_location, workspace_location)
             configuration.update({"workspace": workspace_location})
 

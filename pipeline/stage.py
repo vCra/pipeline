@@ -20,7 +20,7 @@ class Stage(object):
             self.matrix = None
 
     def load_module(self, module_data):
-        module = self.pipeline.modules.load_plugin(module_data["name"])
+        module = self.pipeline.modules.load_plugin(module_data["mod_name"])
         self.module = module.pipeline_ci_module(self, config=module_data)
 
     def run(self):

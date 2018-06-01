@@ -1,4 +1,4 @@
-gitpython==2.1.9
+gitpython==2.1.10
 pyyaml==3.12
 pluginbase==0.5
 docker==3.3.0

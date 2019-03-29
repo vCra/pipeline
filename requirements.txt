@@ -3,5 +3,5 @@ pyyaml>4
 pluginbase==1.0.0
 docker==3.7.2
 python-slugify==3.0.1
-transitions==0.6.8
+transitions==0.6.9
 
